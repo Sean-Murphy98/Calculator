@@ -1,0 +1,32 @@
+*{
+    font-family: 'Roboto', serif;
+    box-sizing: border-box;
+}
+#container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    flex-direction: column;
+    height: 75%;
+    width: 75%;
+}
+#display{
+    border: solid black;
+    border-radius: 4px;
+    width: 75%;
+    text-align: end;
+}
+#row1, #row2, #row3, #row4{
+    flex:1;
+    display: flex;
+    align-content: center;
+    gap: 1 em;
+    width: 75%;
+}
+.button{
+    width: 25%;
+    flex: 1;
+    background-color: #cfcfcf;
+    border-radius: 6px;
+}
