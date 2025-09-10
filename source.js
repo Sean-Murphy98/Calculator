@@ -58,6 +58,22 @@ function operHandler(oper, val1, val2){
     return [val1, val2]
 }
 
+function operCallback(val1, val2, newCalc, oper){
+    if (val1 && !oper){
+            figDisplay(" + ");
+            oper = "+";
+            newCalc = false;
+        }
+    else if (val2){
+        vals = operHandler(oper, val1, val2)
+        val1 = vals[0]
+        val2 = vals[1]
+        figDisplay(" + ")
+        oper = "+";
+    }
+    return [val1, val2, newCalc, oper]
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     let newCalc = true;
     let entrystr = "";
@@ -90,65 +106,38 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         })
     }
+    let operCallbackVals = []
     let plusButton = document.querySelector('#btnAdd');
     plusButton.addEventListener('click', () => {
-        if (val1 && !oper){
-            figDisplay(" + ");
-            oper = "+";
-            newCalc = false;
-        }
-        else if (val2){
-            vals = operHandler(oper, val1, val2)
-            val1 = vals[0]
-            val2 = vals[1]
-            figDisplay(" + ")
-            oper = "+";
-        }
+        operCallbackVals = operCallback(val1, val2, newCalc, oper)
+        val1 = operCallbackVals[0];
+        val2 = operCallbackVals[1];
+        newCalc = operCallbackVals[2];
+        oper = operCallbackVals[3];
     })
     let minusButton = document.querySelector('#btnSub');
     minusButton.addEventListener('click', () => {
-        if (val1 && !oper){
-            figDisplay(" - ");
-            oper = "-";
-            newCalc = false;
-        }
-        else if (val2){
-            vals = operHandler(oper, val1, val2)
-            val1 = vals[0]
-            val2 = vals[1]
-            figDisplay(" - ")
-            oper = "-";
-        }
+        operCallbackVals = operCallback(val1, val2, newCalc, oper)
+        val1 = operCallbackVals[0];
+        val2 = operCallbackVals[1];
+        newCalc = operCallbackVals[2];
+        oper = operCallbackVals[3];
     })
     let multButton = document.querySelector('#btnMult');
     multButton.addEventListener('click', () => {
-        if (val1 && !oper){
-            figDisplay(" x ");
-            oper = "x";
-            newCalc = false;
-        }
-        else if (val2){
-            vals = operHandler(oper, val1, val2)
-            val1 = vals[0]
-            val2 = vals[1]
-            figDisplay(" x ")
-            oper = "x"
-        }
+        operCallbackVals = operCallback(val1, val2, newCalc, oper)
+        val1 = operCallbackVals[0];
+        val2 = operCallbackVals[1];
+        newCalc = operCallbackVals[2];
+        oper = operCallbackVals[3];
     })
     let divideButton = document.querySelector('#btnDivide');
     divideButton.addEventListener('click', () => {
-        if (val1 && !oper){
-            figDisplay(" ÷ ");
-            oper = "÷";
-            newCalc = false;
-        }
-        else if (val2){
-            vals = operHandler(oper, val1, val2)
-            val1 = vals[0]
-            val2 = vals[1]
-            figDisplay(" ÷ ")
-            oper = "÷"
-        }
+        operCallbackVals = operCallback(val1, val2, newCalc, oper)
+        val1 = operCallbackVals[0];
+        val2 = operCallbackVals[1];
+        newCalc = operCallbackVals[2];
+        oper = operCallbackVals[3];
     })
     eqButton = document.querySelector('#btnEq')
     eqButton.addEventListener('click', () => {
