@@ -34,9 +34,25 @@ function clearDisplay(){
     display.textContent = "";
 }
 
+function figDisplay(fig){
+    const display = document.querySelector("#display");
+    display.textContent += fig;
+}
+
 document.addEventListener('DOMContentLoaded', function(){
+    let newCalc = true;
     const clearButton = document.querySelector('#btnClear')
     clearButton.addEventListener('click', () => {
         clearDisplay();
     })
+    for (let i=0; i<10; i++){
+        let numButton = document.querySelector(`#btn${i}`);
+        numButton.addEventListener('click', () => {
+            if (newCalc){
+                clearDisplay();
+                newCalc = false;
+            }
+            figDisplay(i)
+        })
+    }
 });
