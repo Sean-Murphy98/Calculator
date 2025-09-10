@@ -9,10 +9,16 @@ function subtract(num1, num2){
 
 function multiply(num1, num2){
     console.log(num1*num2)
+    return (num1*num2)
 }
 
 function divide(num1, num2){
+    if (num2 == 0){
+        alert("Can't divide by 0 silly!");
+        num2 = 1;
+    }
     console.log(num1/num2)
+    return (num1/num2)
 }
 
 function operate(operator, num1, num2){
@@ -24,10 +30,10 @@ function operate(operator, num1, num2){
        result = subtract(num1, num2)
     }
     else if (operator == "x"){
-        multiply(num1, num2)
+        result = multiply(num1, num2)
     }
     if (operator == "÷"){
-        divide(num1, num2)
+        result = divide(num1, num2)
     }
     return result;
 }
@@ -71,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function(){
         numButton.addEventListener('click', () => {
             if (newCalc){
                 clearDisplay();
+                val1 = "";
+                val2 = "";
                 newCalc = false;
             }
             figDisplay(i)
@@ -84,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     let plusButton = document.querySelector('#btnAdd');
     plusButton.addEventListener('click', () => {
-        if ((newCalc && val1) || !newCalc && !val2 && !oper){
+        if (val1 && !oper){
             figDisplay(" + ");
             oper = "+";
             newCalc = false;
@@ -94,11 +102,12 @@ document.addEventListener('DOMContentLoaded', function(){
             val1 = vals[0]
             val2 = vals[1]
             figDisplay(" + ")
+            oper = "+";
         }
     })
     let minusButton = document.querySelector('#btnSub');
     minusButton.addEventListener('click', () => {
-        if ((newCalc && val1) || !newCalc && !val2 && !oper){
+        if (val1 && !oper){
             figDisplay(" - ");
             oper = "-";
             newCalc = false;
@@ -108,6 +117,37 @@ document.addEventListener('DOMContentLoaded', function(){
             val1 = vals[0]
             val2 = vals[1]
             figDisplay(" - ")
+            oper = "-";
+        }
+    })
+    let multButton = document.querySelector('#btnMult');
+    multButton.addEventListener('click', () => {
+        if (val1 && !oper){
+            figDisplay(" x ");
+            oper = "x";
+            newCalc = false;
+        }
+        else if (val2){
+            vals = operHandler(oper, val1, val2)
+            val1 = vals[0]
+            val2 = vals[1]
+            figDisplay(" x ")
+            oper = "x"
+        }
+    })
+    let divideButton = document.querySelector('#btnDivide');
+    divideButton.addEventListener('click', () => {
+        if (val1 && !oper){
+            figDisplay(" ÷ ");
+            oper = "÷";
+            newCalc = false;
+        }
+        else if (val2){
+            vals = operHandler(oper, val1, val2)
+            val1 = vals[0]
+            val2 = vals[1]
+            figDisplay(" ÷ ")
+            oper = "÷"
         }
     })
     eqButton = document.querySelector('#btnEq')
