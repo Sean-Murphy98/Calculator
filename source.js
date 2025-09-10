@@ -28,3 +28,15 @@ function operate(operator, num1, num2){
         divide(num1, num2)
     }
 }
+
+function clearDisplay(){
+    const display = document.querySelector("#display");
+    display.textContent = "";
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    const clearButton = document.querySelector('#btnClear')
+    clearButton.addEventListener('click', () => {
+        clearDisplay();
+    })
+});

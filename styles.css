@@ -16,6 +16,7 @@
     border-radius: 4px;
     width: 75%;
     text-align: end;
+    height: 20px;
 }
 #row1, #row2, #row3, #row4{
     flex:1;
