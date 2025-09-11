@@ -37,7 +37,7 @@ function operate(operator, num1, num2){
     }
     return result;
 }
-
+//Removes all values from display if new calculation
 function clearDisplay(){
     const display = document.querySelector("#display");
     display.textContent = "";
@@ -58,7 +58,7 @@ function operHandler(oper, val1, val2){
 }
 
 function operCallback(val1, val2, newCalc, symbol, oper){
-    console.log(val1)
+    symbol = symbol == '*' ? 'x' : symbol == '/' ? '÷' : symbol;
     if (val1 && !oper){
             figDisplay(` ${symbol} `);
             oper = symbol;
@@ -74,9 +74,37 @@ function operCallback(val1, val2, newCalc, symbol, oper){
     return [val1, val2, newCalc, oper]
 }
 
+function eqCallback(val1, val2, newCalc, oper){
+    if (!newCalc && val2) {
+        vals = operHandler(oper, val1, val2)
+        console.log(oper)
+        val1 = vals[0]
+        val2 = vals[1]
+        oper = "";
+        newCalc = true;
+    }
+    return [val1, val2, newCalc, oper]
+}
+
+function digCallback(i, val1, val2, newCalc, oper){
+    if (newCalc){
+        clearDisplay();
+        val1 = "";
+        val2 = "";
+        newCalc = false;
+    }
+    figDisplay(i)
+    if (!oper){
+        val1 += i
+    }
+    else{
+        val2 += i
+    }
+    return [val1,val2,newCalc]
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     let newCalc = true;
-    let entrystr = "";
     let val1 = "";
     let val2 = "";
     let oper = "";
@@ -91,21 +119,35 @@ document.addEventListener('DOMContentLoaded', function(){
     for (let i=0; i<10; i++){
         let numButton = document.querySelector(`#btn${i}`);
         numButton.addEventListener('click', () => {
-            if (newCalc){
-                clearDisplay();
-                val1 = "";
-                val2 = "";
-                newCalc = false;
-            }
-            figDisplay(i)
-            if (!oper){
-                val1 += i
-            }
-            else{
-                val2 += i
-            }
+            let digCallbackVals = digCallback(i, val1, val2, newCalc, oper)
+            val1 = digCallbackVals[0];
+            val2 = digCallbackVals[1];
+            newCalc = digCallbackVals[2];
         })
     }
+    document.addEventListener('keydown', (e) => {
+        let key = e.key;
+        if (key >= 0 && key <= 9){
+            let digCallbackVals = digCallback(key, val1, val2, newCalc, oper)
+            val1 = digCallbackVals[0];
+            val2 = digCallbackVals[1];
+            newCalc = digCallbackVals[2];
+        }
+        else if (['+', '-', '*', '/'].includes(key)){
+            operCallbackVals = operCallback(val1, val2, newCalc, key, oper)
+            val1 = operCallbackVals[0];
+            val2 = operCallbackVals[1];
+            newCalc = operCallbackVals[2];
+            oper = operCallbackVals[3];
+        }
+        else if (key === 'Enter' || key === '='){
+            vals = eqCallback(val1, val2, newCalc, oper)
+            val1 = vals[0]
+            val2 = vals[1]
+            newCalc = vals[2]
+            oper = vals[3]
+        }
+    })
     let operCallbackVals = []
     let opButtons = document.querySelectorAll('.operator')
     opButtons.forEach(button => {
@@ -120,13 +162,10 @@ document.addEventListener('DOMContentLoaded', function(){
     })
     eqButton = document.querySelector('#btnEq')
     eqButton.addEventListener('click', () => {
-        if (!newCalc && val2) {
-            vals = operHandler(oper, val1, val2)
-            console.log(oper)
-            val1 = vals[0]
-            val2 = vals[1]
-            oper = "";
-            newCalc = true;
-        }
+        vals = eqCallback(val1, val2, newCalc, oper)
+        val1 = vals[0]
+        val2 = vals[1]
+        newCalc = vals[2]
+        oper = vals[3]
     })
 });
